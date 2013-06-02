@@ -29,6 +29,7 @@
         android:layout_alignBaseline="@+id/bTip15"
         android:layout_alignBottom="@+id/bTip15"
         android:layout_toRightOf="@+id/bTip15"
+        android:onClick="calculateTipFunction"
         android:text="20%" />
 
     <Button
@@ -36,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:onClick="calculateTipFunction"
         android:text="15%" />
 
     <Button
@@ -45,6 +47,8 @@
         android:layout_alignBaseline="@+id/bTip15"
         android:layout_alignBottom="@+id/bTip15"
         android:layout_toLeftOf="@+id/bTip15"
+        android:tag="10"
+        android:onClick="calculateTipFunction"
         android:text="10%" />
 
     <TextView
