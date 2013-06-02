@@ -3,6 +3,9 @@ package com.yahoo.tipcalculator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -18,7 +21,7 @@ public class MainActivity extends Activity {
 	Button bTip15;
 	Button bTip20;
 	
-	int lastTipPercent = 0;
+	double lastTipPercent = 0.0;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,55 +36,53 @@ public class MainActivity extends Activity {
         bTip15.setTag(15);
         bTip20.setTag(20);
         
-//        bTip10.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				tvTipAmount.setText("Tip is: " + calculateTip(etBillAmount.getText().toString(), Double.parseDouble(bTip10.getTag().toString())));
-//				lastTipPercent = 10;
-//				inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-//			}
-//		});
-//        
-//        bTip15.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				tvTipAmount.setText("Tip is: " + calculateTip(etBillAmount.getText().toString(), 15));
-//				lastTipPercent = 15; 
-//				inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-//			}
-//		});
-//        
-//        bTip20.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				tvTipAmount.setText("Tip is: " + calculateTip(etBillAmount.getText().toString(), 20));
-//				lastTipPercent = 20;
-//				
-//			}
-//		});
+        etBillAmount = (EditText) findViewById(R.id.etBillAmount);
+        
+        etBillAmount.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub		
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+		    	etBillAmount = (EditText) findViewById(R.id.etBillAmount);
+		    	tvTipAmount  = (TextView) findViewById(R.id.tvTipText);
+		    	double tip;
+		    	
+				if (etBillAmount.getText().toString().isEmpty())
+					tip = 0;		    	
+				else
+					tip = Double.parseDouble(etBillAmount.getText().toString()) * lastTipPercent / 100;
+					
+		    	tvTipAmount.setText("Tip is: " + String.format("%.2f", tip));
+			}
+		});        
     }
     
     public void calculateTipFunction(View v) {
     	etBillAmount = (EditText) findViewById(R.id.etBillAmount);
     	tvTipAmount  = (TextView) findViewById(R.id.tvTipText);
-    	
     	final InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     	
-    	double tip = Double.parseDouble(etBillAmount.getText().toString()) * Double.parseDouble(v.getTag().toString()) / 100;
+    	lastTipPercent = Double.parseDouble(v.getTag().toString());
+    	double tip = Double.parseDouble(etBillAmount.getText().toString()) * lastTipPercent / 100;
     	
     	tvTipAmount.setText("Tip is: " + String.format("%.2f", tip));
     	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
-    
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-    
-    
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+      // Inflate the menu; this adds items to the action bar if it is present.
+      getMenuInflater().inflate(R.menu.main, menu);
+      return true;
+    }
 }
