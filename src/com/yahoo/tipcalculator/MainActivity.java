@@ -55,11 +55,9 @@ public class MainActivity extends Activity {
 			public void afterTextChanged(Editable s) {
 		    	etBillAmount = (EditText) findViewById(R.id.etBillAmount);
 		    	tvTipAmount  = (TextView) findViewById(R.id.tvTipText);
-		    	double tip;
+		    	double tip = 0.0;
 		    	
-				if (etBillAmount.getText().toString().isEmpty())
-					tip = 0;		    	
-				else
+				if (!etBillAmount.getText().toString().isEmpty())
 					tip = Double.parseDouble(etBillAmount.getText().toString()) * lastTipPercent / 100;
 					
 		    	tvTipAmount.setText("Tip is: " + String.format("%.2f", tip));
